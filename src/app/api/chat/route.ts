@@ -52,6 +52,9 @@ export async function POST(request: NextRequest): Promise<NextResponse<ChatRespo
 
     return NextResponse.json({ text: displayText, isComplete: true, projectData })
   } catch (error: unknown) {
+    if (error instanceof Error && error.message.includes('authentication_error')) {
+      return NextResponse.json({ error: 'Invalid API key. Add your ANTHROPIC_API_KEY to .env.local and restart the server.' }, { status: 500 })
+    }
     const message = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json({ error: `Anthropic API error: ${message}` }, { status: 500 })
   }
