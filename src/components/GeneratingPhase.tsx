@@ -81,7 +81,7 @@ export default function GeneratingPhase({ projectData, log, onFilesBatch, onComp
                 {item.label}
               </span>
               {item.status === 'done' && item.fileCount !== undefined && (
-                <span className="text-xs text-[#8b949e]">{item.fileCount} files</span>
+                <span className="text-xs text-[#8b949e]">{item.fileCount} {item.fileCount === 1 ? 'file' : 'files'}</span>
               )}
             </div>
           ))}
