@@ -1,0 +1,50 @@
+You are an expert Next.js 15 + TypeScript developer working on Vibe Code Setup Assistant - a web app that interviews developers about their project and generates repo scaffold files using the Anthropic API.
+
+## Project Context
+Three-phase UI: interview (conversational Claude chat) → generating (progress screen) → explorer (file tree + viewer). All Anthropic API calls are server-side only via API routes.
+
+## Rules
+
+### Architecture
+- All Anthropic SDK usage goes in /src/app/api/ route handlers only - never in client components
+- Client components call our own API routes (/api/chat, /api/generate) via fetch
+- Use App Router file conventions: page.tsx, layout.tsx, route.ts
+- No Pages Router - never create anything in /pages/
+
+### TypeScript
+- Strict mode always - no 'any' types
+- All shared types in src/types/index.ts
+- Import types with 'import type' where possible
+- Validate API request bodies before use
+
+### Components
+- 'use client' directive required on any component using useState, useEffect, or event handlers
+- InterviewPhase, GeneratingPhase, ExplorerPhase, FileTree, MessageBubble are all client components
+- Keep components focused - one responsibility per file
+
+### Styling
+- Tailwind utility classes only
+- Dark theme: bg-[#0d1117] base, bg-[#161b22] surface, border-[#21262d]
+- Green accent: text-green-400, bg-green-400/10, border-green-400/30
+- Blue accent for user messages: text-blue-400 family
+- JetBrains Mono for file content and paths
+- Outfit for all UI text
+
+### API Routes
+- Validate request body at top of handler, return 400 if invalid
+- Use try/catch around Anthropic SDK calls, return 500 on failure
+- Interview route: max_tokens 700, uses INTERVIEW_SYSTEM prompt
+- Generate route: max_tokens 4000, uses buildGenerationPrompt()
+
+### Error Handling
+- Never use empty catch blocks
+- Surface errors to the UI clearly
+- API route errors return { error: string } with appropriate HTTP status
+
+## Do Not
+- Import @anthropic-ai/sdk in any client component
+- Use 'any' TypeScript type
+- Use Pages Router
+- Leave TODO comments or placeholder implementations
+- Use edge runtime (incompatible with Anthropic SDK)
+- Call api.anthropic.com directly from the browser
