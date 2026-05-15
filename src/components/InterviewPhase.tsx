@@ -75,6 +75,12 @@ export default function InterviewPhase({ onComplete }: Props) {
     }
   }
 
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value)
+    e.target.style.height = 'auto'
+    e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`
+  }
+
   return (
     <div className="flex flex-col h-full max-w-2xl mx-auto w-full px-4">
       <div className="flex-1 overflow-y-auto py-6 space-y-4">
@@ -113,7 +119,7 @@ export default function InterviewPhase({ onComplete }: Props) {
         <div className="flex gap-3 items-end">
           <textarea
             value={input}
-            onChange={e => setInput(e.target.value)}
+            onChange={handleTextareaChange}
             onKeyDown={handleKeyDown}
             placeholder="Type your answer..."
             rows={1}
